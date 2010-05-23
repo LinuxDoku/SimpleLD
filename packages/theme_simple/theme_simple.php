@@ -1,8 +1,9 @@
 <?php
 /**
- * Description of package_manager
+ * This is a simple theme for demonstrate the
+ * theme features.
  *
- * @package  package_manager
+ * @package  theme_simple
  * @author   Martin Lantzsch
  * @mail     martin@linux-doku.de
  * @licence  GPL
