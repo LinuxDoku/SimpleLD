@@ -1,6 +1,8 @@
 <?php
 /**
- * Description of package_manager
+ * With the package manager you can manage all your
+ * packages. You can install, update and uninstall
+ * your packages.
  *
  * @package  package_manager
  * @author   Martin Lantzsch
@@ -14,7 +16,7 @@ class package_manager extends package {
 
     public static function indexActions()
     {
-        if(preg_match('/acp\/package_manager\/install\/[a-zA-Z0-9_-]/', $_GET['p']))
+        if(preg_match('/acp\/package_manager\/install\/([a-zA-Z0-9_-])*/', $_GET['p']))
         {
             self::_install_package(self::_Request('3'));
         }
