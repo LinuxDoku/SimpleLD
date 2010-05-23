@@ -1,0 +1,84 @@
+/**
+ * @author   Martin Lantzsch
+ * @mail     martin@linux-doku.de
+ * @licence  Copyright by Martin Lantzsch 2010
+ */
+
+body {
+  background-color: #E8ECED;
+  font-size: 90%;
+  font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+  
+.wrapper {
+  width: 700px;
+  border: 1px solid #ccc;
+  -moz-border-radius: 5px;
+  background-color: #FFF;
+  margin: 0px auto;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+    
+.header {
+  height: 50px;
+  width: 100%;
+  color: #1E90FF;
+  font-size: 30px;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+    
+.menu {
+  font-size: 100%;
+  background-color: #333;
+  width: 100%;
+  height: 32px;
+  font-weight: bold;
+  padding: 0;
+}
+    
+.menu ul {
+  padding: 8px 8px 8px 8px;
+}
+    
+.menu ul li {
+  display: inline;
+  text-decoration: none;
+  margin: 0;
+  padding: 5px 8px 8px 8px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-topright: 3px;
+}
+    
+.menu ul li a {
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+}
+    
+.menu ul li:hover {
+  background-color: #777;
+}
+
+.content {
+  margin: 15px;
+}
+
+.footer {
+  font-size: 12px;
+  width: 680px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.search {
+  -moz-border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+img {
+  margin: 3px;
+  padding: 2px;
+  border: 1px solid #ccc;
+}
