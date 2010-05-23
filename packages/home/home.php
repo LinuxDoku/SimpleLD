@@ -18,10 +18,6 @@ class home extends package {
         if(self::_request(0) == 'home')
         {
             echo "This is a demo home page<br>";
-            $data = datastore::readData(1, array('name' => 'title'));
-            print_r($data);
-            //datastore::addData(array('title' => 'Test', 'body' => 'Hiho'), 'page');
-            datastore::addData(array('mail' => 'martin@linux-doku.de', 'text' => 'Hi ich bins...'), 'comment');
         }
     }
 }
