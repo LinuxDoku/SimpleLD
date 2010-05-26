@@ -1,6 +1,8 @@
 <?php
 /**
- * This file loads all active packages
+ * This file loads the config file, connects to the database
+ * (if the connection details are filled in the config file)
+ * and it loads all packages from the packages directory.
  *
  * @package  core
  * @author   Martin Lantzsch
@@ -13,6 +15,7 @@ require('packages/core/classes/db.php');
 require('packages/core/classes/packages.php');
 require('packages/core/classes/package.php');
 require('packages/core/classes/template.php');
+require('packages/core/classes/ini.php');
 
 // load config file
 $config = parse_ini_file('includes/config.php', true);
@@ -36,7 +39,7 @@ if(!packages::readCache())
     $cache = true;
 }
 
-// NOTE: This step can be also work with a database
+// NOTE: This step could also work with a database
 $dir = scandir('packages/');
 foreach($dir as $name)
 {
@@ -49,7 +52,7 @@ foreach($dir as $name)
         {
           packages::load(new $name);
         }
-        // load lang file if existing
+        // load language file if existing
         if(file_exists("packages/$name/lang/".$config['core']['lang'].".php"))
         {
             $lang[$name] = ini::read("packages/$name/lang/".$config['core']['lang'].".php", false);
@@ -61,6 +64,6 @@ foreach($dir as $name)
 if($cache == false)
 {
     packages::writeCache();
-    packages::call('core_init_write_cache');
+    packages::call('coreInitWriteCache');
 }
 ?>

@@ -11,19 +11,43 @@
 class package
 {
     /**
-     * Add a message to log
-     *
-     * @param  string  $package
-     * @param  string  $type
-     * @param  string  $message
-     * @return boolean
+     * Prevent the packages system before scanning
+     * this file.
+     * @var bool
      */
-    static function _log($package, $type, $message)
-    {
-        global $log;
-        // now we add a new item to the package log
-        $log[$package][] = array($type, $message);
-        return true;
+    public static $hooks = false;
+
+    /**
+     * All loaded classes
+     * @var array
+     */
+    private static $loadedClasses = array();
+
+    /**
+     * Load a class from the given package class dir.
+     *
+     * @param  string $name
+     * @param  string $package
+     * @return object/bool
+     */
+    public static function loadClass($name, $package='core') {
+        if(file_exists('packages/'.$package.'/classes/'.$name.'.php'))
+        {
+            include_once('packages/'.$package.'/classes/'.$name.'.php');
+            self::$loadedClasses[$name] = $package;
+            return new $name;
+        } else {
+            return false;
+        }
+    }
+
+    public static function checkClass($name, $package='core') {
+        $availible = false;
+        if(count(self::$loadedClasses[$name]) != 0)
+        {
+            $availible = true;
+        }
+        return $availible;
     }
 
     /**
@@ -33,7 +57,7 @@ class package
      * @param  string $option
      * @return string
      */
-    static function _getConf($section, $option)
+    public static function getConf($section, $option)
     {
         global $config;
         return $config[$section][$option];
@@ -48,7 +72,7 @@ class package
      * @param  string  file
      * @return boolean
      */
-    static function _setConf($group, $item, $value, $file='includes/config.php')
+    public static function setConf($group, $item, $value, $file='includes/config.php')
     {
         global $vars;
         $vars[$pkg][$option] = $value;
@@ -65,7 +89,7 @@ class package
      * @param  string  file
      * @return boolean
      */
-    static function _rmConf($group, $item = '', $file='includes/config.php')
+    public static function rmConf($group, $item = '', $file='includes/config.php')
     {
         global $config;
         if($file != 'includes/config.php')
@@ -95,7 +119,7 @@ class package
      * @param  string  message
      * @return boolean
      */
-    static function _Message($message)
+    public static function message($message)
     {
         $_SESSION['message'] = $_SESSION['message']."<br>".$message;
         return true;
@@ -107,52 +131,10 @@ class package
      * @param  string  message
      * @return boolean
      */
-    static function _Error($message)
+    public static function error($message)
     {
         $_SESSION['error'] = $_SESSION['error']."<br>".$message;
         return true;
-    }
-
-    /**
-     * moves to a given page (use it only before any output!)
-     *
-     * @param  string  url
-     */
-    public static function _Move($url)
-    {
-        Header("Location: $url");
-    }
-
-    /**
-     * Explode the page param and give the number
-     *
-     * @param  int $number
-     * @return string
-     */
-    public static function _Request($number)
-    {
-        $get = explode('/', $_GET['p']);
-        return $get[$number];
-    }
-
-    /**
-     * deletes a folder with all subfiles and folders
-     *
-     * @param  string  dir
-     * @return boolean
-     */
-    static function _deleteDir($dir)
-    {
-        if(is_file($dir))
-        {
-            return @unlink($dir);
-        } elseif(is_dir($dir)) {
-            $scan = glob(rtrim($dir,'/').'/*');
-            foreach($scan as $index=>$path) {
-                Package::deleteDir($path);
-            }
-            return @rmdir($dir);
-        }
     }
 
     /**
@@ -162,40 +144,10 @@ class package
      * @param  string $option
      * @return string
      */
-    static function _Lang($section, $option)
+    public static function lang($section, $option)
     {
         global $lang;
         return $lang[$section][$option];
     }
-
-    /**
-     * Write given array to ini file
-     *
-     * @param   string   $file
-     * @return  array    $content
-     */
-    static function _ini_write($file, $content)
-    {
-        if(is_writeable($file) == true)
-        {
-            $c = ";<?php die() ?>\n";
-            foreach($content as $item1 => $item2)
-            {
-                $c = $c."[".$item1."]\n";
-                foreach($item2 as $item3 => $item4)
-                {
-                    $c = $c.$item3." = ".$item4."\n";
-                }
-            }
-            $handle = fopen($file, 'w');
-            if(fwrite($handle, $c))
-            {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
 }
-
 ?>

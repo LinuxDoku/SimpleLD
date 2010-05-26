@@ -20,7 +20,7 @@ class packages
     public static function load($object)
     {
         $name = get_class($object);
-        if(!is_array($name::$hooks))
+        if(!is_array($name::$hooks) || $name::$hooks != false)
         {
             $methods = get_class_methods($name);
             foreach($methods as $method)
@@ -109,7 +109,7 @@ class packages
     public static function writeCache()
     {
         // write to cache file
-        package::_ini_write('includes/packages_cache.php', self::$packages);
+        ini::write('includes/packages_cache.php', self::$packages);
         return true;
     }
 }

@@ -31,8 +31,13 @@ class theme_simple extends package {
      * Load the theme file
      */
     public static function theme() {
+        packages::call('themeMenu', array(array('top'), &$themeMenus));
         // now include the theme file
-        include('packages/theme_simple/theme/main.php');
+        $tpl = new Template('packages/theme_simple/theme/main.php');
+
+        $tpl->Set($themeMenus);
+
+        echo $tpl->parse();
     }
 }
 ?>

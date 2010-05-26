@@ -10,22 +10,39 @@
  * @licence  GPL
  */
 class package_manager extends package {
+    /**
+     * Name of the package
+     * @var string
+     */
     public static $name = 'package_manager';
+
+    /**
+     * Version of the package
+     * @var int
+     */
     public static $version = 0.1;
+
+    /**
+     * Enabled hooks
+     * @var bool/array
+     */
     public static $hooks = true;
 
+    /**
+     * This triggers a URL and calls the installer
+     */
     public static function indexActions()
     {
-        if(preg_match('/acp\/package_manager\/install\/([a-zA-Z0-9_-])*/', $_GET['p']))
+        if(preg_match('/acp\/package_manager\/install\/([a-zA-Z0-9_-])*/', url::get()))
         {
-            self::_install_package(self::_Request('3'));
+            self::_install_package(url::request('3'));
         }
     }
     /**
      * Install a package from tmp
      *
-     * @param  string $name
-     * @return boolean
+     * @param  string  $name
+     * @return bool
      */
     public static function _install_package($name)
     {
@@ -45,6 +62,7 @@ class package_manager extends package {
         } else {
             $old = 0;
         }
+        // if a setup file exists open it
         if(file_exists('packages/'.$name.'/setup.php'))
         {
             $setup = parse_ini_file('packages/'.$name.'/setup.php', true);
@@ -67,7 +85,7 @@ class package_manager extends package {
                             explode('||', $cfg);
                             self::_setConf($name, $cfg[0], $cfg[1]);
                         }
-                        // here you can hook in new packages
+                        // a hook for new packages
                         packages::call('package_manager_install', $version);
                     }
                 }

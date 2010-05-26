@@ -30,14 +30,14 @@ class db
   }
 
   /**
-   * Count all rows, the query will be performed for you
+   * Count all rows of the result
    *
    * @param  string $db_sql
    * @return int
    */
   public static function num_rows($db_sql)
   {
-        $rows_ret = mysql_num_rows(self::query($db_sql));
+        $rows_ret = mysql_num_rows($db_sql);
         return $rows_ret;
   }
 
