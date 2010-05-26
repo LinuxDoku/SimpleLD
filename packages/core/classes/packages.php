@@ -19,28 +19,27 @@ class packages
      */
     public static function load($object)
     {
-        $name = get_class($object);
-        if(!is_array($name::$hooks) || $name::$hooks != false)
+        $objectName = get_class($object);
+        if($objectName::$hooks == true)
         {
-            $methods = get_class_methods($name);
+            $methods = get_class_methods($objectName);
             foreach($methods as $method)
             {
-                if($method{0} != '_')
+                if($method{0} != '_'  && !in_array($method, $objectName::$blackHooks))
                 {
-                    self::$packages[$method][$name] = 1;
+                    self::$packages[$method][$objectName] = 1;
                 }
             }
-         } else {
-             foreach($object::$hooks as $method)
+         } elseif(is_array($objectName::$hooks)) {
+             foreach($objectName::$hooks as $method)
              {
                 if($method{0} != '_')
                 {
-                    self::$packages[$method][$name] = 1;
+                    self::$packages[$method][$objectName] = 1;
                 }
              }
          }
     }
-
 
     /**
      * trigger events, this method checks the packages array and calls them
@@ -67,11 +66,11 @@ class packages
      * check if a package is installed
      *
      * @param  string  name
-     * @return boolean
+     * @return bool
      */
     public static function check($name)
     {
-        if(file_exists("packages/$name/$name.php") == true)
+        if(file_exists("packages/$name/$name.php"))
   	{
   		return true;
   	} else {

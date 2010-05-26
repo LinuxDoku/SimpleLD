@@ -10,13 +10,8 @@
 
 class package
 {
-    /**
-     * Prevent the packages system before scanning
-     * this file.
-     * @var bool
-     */
-    public static $hooks = false;
-
+    public static $blackHooks = array('checkClaas', 'error', 'getConf', 'lang', 'loadClaas', 'message', 'rmConf', 'setConf');
+    
     /**
      * All loaded classes
      * @var array
