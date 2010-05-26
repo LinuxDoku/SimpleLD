@@ -25,10 +25,9 @@ class menu extends package {
     public static $hooks = true;
     
     /**
-     * Give it an array of all it's menus and this package
-     * looks in the database for these menus and puts all
-     * items to a template, which will be given back to
-     * the theme.
+     * Give this hook an array of all theme menus
+     * and it serves you all entry's for each menu
+     * as a template in the $themeMenus array.
      * 
      * @param array $menus
      * @param array $themeMenus
