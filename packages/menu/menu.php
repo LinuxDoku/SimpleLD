@@ -32,7 +32,7 @@ class menu extends package {
      * @param array $menus
      * @param array $themeMenus
      */
-    public static function themeMenu($menus, &$themeMenus) {
+    public static function themeMenus($menus, &$themeMenus) {
         foreach($menus as $name)
         {
             // start new theme

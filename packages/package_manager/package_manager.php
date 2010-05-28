@@ -75,9 +75,9 @@ class package_manager extends package {
                     if($version != 'info' && $old < $version)
                     {
                         // run sql querys
-                        foreach($version['mysql'] as $query)
+                        foreach($version['db'] as $query)
                         {
-                            db::query($query);
+                            db::query(str_replace('NR_', NR, $query));
                         }
                         // set config params
                         foreach($version['config'] as $cfg)

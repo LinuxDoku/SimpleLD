@@ -4,7 +4,7 @@
 lang = "de"
 title = "SimpleLD"
 
-; Database connection - leave empty if you dont need it
+; Database connection - leave empty if you don't need it
 db_host = "localhost"
 db_user = "root"
 db_password = ""

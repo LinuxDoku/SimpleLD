@@ -20,9 +20,7 @@ class theme_simple extends package {
      */
     public static $version = 0.1;
     /**
-     * If the hooks are active set 'true'
-     * else set an array with active hooks
-     * the other ones won't be used
+     * Hooks active?
      * @var bool/array
      */
     public static $hooks = true;
@@ -31,11 +29,14 @@ class theme_simple extends package {
      * Load the theme file
      */
     public static function theme() {
-        packages::call('themeMenu', array(array('top'), &$themeMenus));
+        // call packages to add new vars to the theme
+        packages::call('themeMenus', array(array('top'), &$themeMenus));
+        packages::call('themeVars', array(&$themeVars));
         // now include the theme file
         $tpl = new Template('packages/theme_simple/theme/main.php');
 
         $tpl->Set($themeMenus);
+        $tpl->Set($themeVars);
 
         echo $tpl->parse();
     }

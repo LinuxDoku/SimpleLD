@@ -14,7 +14,7 @@ class core extends package
     public static $hooks = true;
 
     /**
-     * Include all core classes which are not alleready
+     * Include all core classes which are not allready
      * loaded in the init.php
      */
     public static function indexInclude() {
@@ -30,7 +30,9 @@ class core extends package
      */
     public static function indexAfterActions() {
         if(self::checkClass('url', 'core'))
-                url::destination();
+        {
+            url::destination();
+        }
     }
 }
 
