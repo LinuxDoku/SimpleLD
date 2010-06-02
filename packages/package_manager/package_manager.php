@@ -26,7 +26,7 @@ class package_manager extends package {
      * Enabled hooks
      * @var bool/array
      */
-    public static $hooks = true;
+    public static $hooks = array('indexActions' => 'acp/package_manager/install/*');
 
     /**
      * This triggers a URL and calls the installer

@@ -13,7 +13,7 @@ class home extends package {
      * Name of the package
      * @var string
      */
-    public static $name = 'home';
+    public static $name = 'home*';
     /**
      * Version of the package
      * @var int
@@ -23,22 +23,19 @@ class home extends package {
      * Hooks enabled
      * @var bool/array
      */
-    public static $hooks = true;
+    public static $hooks = array('pageContent' => 'home/test*');
 
     /**
      * Give the home page content
      */
     public static function pageContent()
     {
-        if(url::request(0) == 'home')
-        {
-            $tpl = new Template('packages/home/templates/home.php');
+        $tpl = new Template('packages/home/templates/home.php');
 
-            packages::call('homeTemplateVars', &$vars);
-            $tpl->Set($vars);
+        packages::call('homeTemplateVars', &$vars);
+        $tpl->Set($vars);
 
-            echo $tpl->parse();
-        }
+        echo $tpl->parse();
     }
 }
 ?>

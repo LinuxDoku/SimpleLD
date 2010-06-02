@@ -11,7 +11,13 @@ class core extends package
 {
     public static $name = 'core';
     public static $version = 0.1;
-    public static $hooks = true;
+
+    /**
+     * Active hooks
+     * @var  array
+     */
+    public static $hooks = array('indexInclude' => '',
+                                 'indexAfterActions' => '');
 
     /**
      * Include all core classes which are not allready

@@ -32,12 +32,15 @@ define("NR", $config['core']['install_number']);
 
 // get all packages
 // get packages from cache if cache is actual
-if(!packages::readCache())
+if(!packages::readCache() && !$config['hook_cache'])
 {
     $cache = false;
 } else {
     $cache = true;
 }
+
+// say the packages system if the cache is on or off
+packages::$cacheState = $cache;
 
 // NOTE: This step could also work with a database
 $dir = scandir('packages/');
@@ -50,7 +53,7 @@ foreach($dir as $name)
         // if cache is expired load package
         if($cache == false)
         {
-          packages::load(new $name);
+            packages::load(new $name);
         }
         // load language file if existing
         if(file_exists("packages/$name/lang/".$config['core']['lang'].".php"))

@@ -23,7 +23,7 @@ class theme_simple extends package {
      * Hooks active?
      * @var bool/array
      */
-    public static $hooks = true;
+    public static $hooks = array('theme' => '');
 
     /**
      * Load the theme file

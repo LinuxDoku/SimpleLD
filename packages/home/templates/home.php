@@ -1,1 +1,1 @@
-Dies ist die Test Homepage.
+<p>Dies ist die Test Homepage.</p>

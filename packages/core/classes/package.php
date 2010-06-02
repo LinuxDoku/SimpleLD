@@ -10,8 +10,6 @@
 
 class package
 {
-    public static $blackHooks = array('checkClass', 'error', 'getConf', 'lang', 'loadClass', 'message', 'rmConf', 'setConf');
-    
     /**
      * All loaded classes
      * @var array
@@ -36,6 +34,13 @@ class package
         }
     }
 
+    /**
+     * Check if a class is loaded
+     *
+     * @param  string  $name
+     * @param  string  $package
+     * @return bool
+     */
     public static function checkClass($name, $package='core') {
         $availible = false;
         if(count(self::$loadedClasses[$name]) != 0)
