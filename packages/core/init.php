@@ -32,10 +32,10 @@ define("NR", $config['core']['install_number']);
 
 // get all packages
 // get packages from cache if cache is actual
-if(!packages::readCache() && !$config['hook_cache'])
+if(!packages::readCache() && !$config['packages_cache'])
 {
     $cache = false;
-} elseif($config['hook_cache']) {
+} elseif($config['packages_cache']) {
     $cache = true;
 }
 
