@@ -35,7 +35,7 @@ define("NR", $config['core']['install_number']);
 if(!packages::readCache() && !$config['hook_cache'])
 {
     $cache = false;
-} else {
+} elseif($config['hook_cache']) {
     $cache = true;
 }
 
