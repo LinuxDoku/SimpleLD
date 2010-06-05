@@ -23,19 +23,24 @@ class home extends package {
      * Hooks enabled
      * @var bool/array
      */
-    public static $hooks = array('pageContent' => 'home/test*');
+    public static $hooks = array('pageContent' => 'home');
+
+    public static $controller = array('default' => array('controller_test' => 0),
+                                      'test' => array('controller_test' => 0));
 
     /**
      * Give the home page content
      */
-    public static function pageContent()
+    public static function controller_test()
     {
+        packages::call('themeHeader');
         $tpl = new Template('packages/home/templates/home.php');
 
         packages::call('homeTemplateVars', &$vars);
         $tpl->Set($vars);
 
         echo $tpl->parse();
+        packages::call('themeFooter');
     }
 }
 ?>

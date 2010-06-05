@@ -22,11 +22,11 @@ class log {
      * @param  string  $message
      * @return bool
      */
-    static function add($package, $type, $message)
+    static function add($package, $info, $type, $message)
     {
         // now we add a new item to the package log
-        self::$log[$package][] = array($type, $message);
-        return true;
+        self::$log[$package][] = array($type, array($info, $message));
+        return $message;
     }
 
     /**
@@ -40,14 +40,14 @@ class log {
     static function read($package, $type='') {
         $tmp = array();
         // go through all log entrys
-        foreach(self::$log[$package] as $logType => $logName)
+        foreach(self::$log[$package] as $logType => $logMessage)
         {
             // write it if the type is ok
             if($logType == $type)
             {
-                $tmp[] = $logName;
+                $tmp[] = $logMessage;
             } elseif($type == '') {
-                $tmp[] = $logName;
+                $tmp[] = $logMessage;
             }
         }
         return $tmp;

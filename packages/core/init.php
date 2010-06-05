@@ -48,13 +48,7 @@ foreach($dir as $name)
 {
     if(file_exists("packages/$name/$name.php"))
     {
-        // include plugin and initialize it
-        include("packages/$name/$name.php");
-        // if cache is expired load package
-        if($cache == false)
-        {
-            packages::load(new $name);
-        }
+        packages::load($name);
         // load language file if existing
         if(file_exists("packages/$name/lang/".$config['core']['lang'].".php"))
         {

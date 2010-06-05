@@ -15,6 +15,18 @@ class packages
      * @var  array
      */
     public static $packages = array();
+
+    /**
+     * All loaded Hooks
+     * @var  array
+     */
+    public static $hooks = array();
+
+    /**
+     * All loaded Controllers
+     * @var  array
+     */
+    public static $controller = array();
     
     /**
      * If cache is active or inactive
@@ -58,34 +70,53 @@ class packages
      * @param   string   $object
      * @return  boolean
      */
-    public static function load($object)
+    public static function load($name)
     {
-        $objectName = get_class($object);
-        if($objectName::$hooks === true)
+        if(!self::$cacheState && file_exists('packages/'.$name.'/'.$name.'.php'))
         {
-            $methods = get_class_methods($objectName);
-            foreach($methods as $method)
+            require_once('packages/'.$name.'/'.$name.'.php');
+            $object = new $name;
+            $objectName = get_class($object);
+            // register package
+            self::$packages[$objectName] = true;
+            // load hooks
+            if($objectName::$hooks === true)
             {
-                if($method{0} != '_')
+                $methods = get_class_methods($objectName);
+                foreach($methods as $method)
                 {
-                    self::$packages[$method][$objectName] = '';
-                }
-            }
-         } elseif(is_array($objectName::$hooks)) {
-             foreach($objectName::$hooks as $method => $url)
-             {
-                if($method{0} != '_' && self::$cacheState == true)
-                {
-                    self::$packages[$method][$objectName] = $url;
-                } elseif($method{0} != '_') {
-                    // load only hooks which are similar to the url
-                    if(self::handleUrl($url))
+                    if($method{0} != '_')
                     {
-                        self::$packages[$method][$objectName] = $url;
+                        self::$hooks[$method][$objectName] = '';
+                    }
+                }
+             } elseif(is_array($objectName::$hooks)) {
+                 foreach($objectName::$hooks as $method => $url)
+                 {
+                    if($method{0} != '_' && self::$cacheState == true)
+                    {
+                        self::$hooks[$method][$objectName] = $url;
+                    } elseif($method{0} != '_') {
+                        // load only hooks which are similar to the url
+                        if(self::handleUrl($url))
+                        {
+                            self::$hooks[$method][$objectName] = $url;
+                        }
+                    }
+                 }
+             }
+             // load controllers
+             if(isset($objectName::$controller))
+             {
+                if(is_array($objectName::$controller))
+                {
+                    foreach($objectName::$controller as $name => $infos)
+                    {
+                        self::$controller[$objectName][$name] = $infos;
                     }
                 }
              }
-         }
+        }
     }
 
     /**
@@ -97,9 +128,9 @@ class packages
      */
     public static function call($event, $param='')
     {
-        if(count(self::$packages[$event]) != 0)
+        if(count(self::$hooks[$event]) != 0)
         {
-            foreach(self::$packages[$event] as $name => $url)
+            foreach(self::$hooks[$event] as $name => $url)
             {
                 if(self::handleUrl($url))
                 {
@@ -108,6 +139,47 @@ class packages
                         call_user_func(array($name, $event));
                     } else {
                         call_user_func_array(array($name, $event), $param);
+                    }
+                }
+            }
+        }
+    }
+
+    public static function callController($request)
+    {
+        $request = trim($request);
+        $params = explode('/', $request);
+        // put params to vars
+        $package = $params[0];
+        $controller = $params[1];
+        // check if a controller is given else load default
+        if(!isset($controller))
+        {
+            $controller = 'default';
+            $params[1] = 'default';
+        }
+        // now look if a controller exists
+        if(!isset(self::$controller[$package][$controller]))
+        {
+            $controller = 'default';
+            $params[1] = 'default';
+        }
+        // now call the controller
+        if(self::$controller[$package][$controller])
+        {
+            foreach(self::$controller[$package][$controller] as $methodName => $controllerParams)
+            {
+                if((count($params) - 2) == $controllerParams)
+                {
+                    // now decide which function we use and call the controller
+                    if($controllerParams == 0)
+                    {
+                        call_user_func(array($package, $methodName));
+                    } else {
+                        // remove the package and the controller from the params
+                        array_shift($params);
+                        array_shift($params);
+                        call_user_func_array(array($package, $methodName), $params);
                     }
                 }
             }
@@ -138,12 +210,12 @@ class packages
     public static function readCache()
     {
         // check if cache is actual and then parse it
-        if(file_exists('includes/packages_cache.php'))
+        if(file_exists('includes/hook_cache.php'))
         {
-            self::$packages = parse_ini_file('includes/packages_cache.php', true);
+            self::$hooks = parse_ini_file('includes/hook_cache.php', true);
         }
         // check if any hooks are registered
-        if(count(self::$packages) == 0)
+        if(count(self::$hooks) == 0)
         {
             return false;
         } else {
@@ -160,7 +232,7 @@ class packages
     public static function writeCache()
     {
         // write to cache file
-        ini::write('includes/packages_cache.php', self::$packages);
+        ini::write('includes/hook_cache.php', self::$hooks);
         return true;
     }
 }

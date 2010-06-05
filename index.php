@@ -21,12 +21,15 @@ packages::call('indexInclude');
 packages::call('systemInit');
 
 // now call actions
+packages::call('indexBeforeActions');
 packages::call('indexActions');
 packages::call('indexAfterActions');
 
-// load theme
-packages::call('theme');
+// call the MVC Controllers
+packages::call('indexBeforeController');
+packages::callController($_GET['p']);
+packages::call('indexAfterController');
 
 // last hook, e.g. for counters
-packages::call('indexEnd')
+packages::call('indexEnd');
 ?>

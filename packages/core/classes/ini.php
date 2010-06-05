@@ -8,13 +8,30 @@
  * @licence  GPL
  */
 class ini {
+
+    /**
+     * Parse a .ini file with or without groups
+     *
+     * @param  string $file
+     * @param  string $option
+     * @return array
+     */
+    public static function read($file, $option='false')
+    {
+        if($option == true)
+            $data = parse_ini_file($file, true);
+        else
+            $data = parse_ini_file($file);
+        return $data;
+    }
+
     /**
      * Write given array to ini file
      *
      * @param   string   $file
      * @return  array    $content
      */
-    static function write($file, $content)
+    public static function write($file, $content)
     {
         if(is_writeable($file) == true)
         {
@@ -35,6 +52,30 @@ class ini {
                 return false;
             }
         }
+    }
+
+    /**
+     * Change a value in a .ini file
+     *
+     * @param string $file
+     * @param string $item
+     * @param string $value
+     * @param string $group
+     */
+    public static function change($file, $item, $value, $group)
+    {
+        // at first parse the file
+        if($group != false)
+        {
+            $data = self::read($file);
+            $data[$item] = $value;
+        } else {
+            $data = self::read($file, true);
+            $data[$group][$item] = $value;
+        }
+
+        // now write back
+        return self::write($file, $data);
     }
 }
 ?>

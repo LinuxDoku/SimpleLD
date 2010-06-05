@@ -57,5 +57,18 @@ class url {
         if($_GET['destination'])
             self::location('?p='.$_GET['destination']);
     }
+
+    /**
+     * Generate a link from a title
+     *   Hello World! --> hello-world
+     *
+     * @param  string  $name
+     * @return string
+     */
+    public static function makeLink($name) {
+        // replace dashes with the seperator
+        $link = preg_replace('![^-a-z0-9\s]+!', '', strtolower(trim($name)));
+        return $link;
+    }
 }
 ?>
