@@ -9,13 +9,13 @@
  */
 class request {
 
-    public static function post($name='')
+    public static function post($name=false)
     {
-        if($name != '')
+        if($name != false)
         {
             return $_GET[$name];
         } else {
-            return $_GET[$name];
+            return $_GET;
         }
     }
 }
