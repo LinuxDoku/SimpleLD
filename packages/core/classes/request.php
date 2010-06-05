@@ -13,9 +13,9 @@ class request {
     {
         if($name != false)
         {
-            return $_GET[$name];
+            return $_POST[$name];
         } else {
-            return $_GET;
+            return $_POST;
         }
     }
 }
