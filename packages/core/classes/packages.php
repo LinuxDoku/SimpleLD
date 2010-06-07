@@ -68,7 +68,6 @@ class packages
      * Load package and put name and events into packagess array
      *
      * @param   string   $object
-     * @return  boolean
      */
     public static function load($name)
     {
@@ -80,17 +79,7 @@ class packages
             // register package
             self::$packages[$objectName] = true;
             // load hooks
-            if($objectName::$hooks === true)
-            {
-                $methods = get_class_methods($objectName);
-                foreach($methods as $method)
-                {
-                    if($method{0} != '_')
-                    {
-                        self::$hooks[$method][$objectName] = '';
-                    }
-                }
-             } elseif(is_array($objectName::$hooks)) {
+            if(is_array($objectName::$hooks)) {
                  foreach($objectName::$hooks as $method => $url)
                  {
                     if($method{0} != '_' && self::$cacheState == true)
