@@ -23,7 +23,8 @@ class theme_simple extends package {
      * Hooks active?
      * @var bool/array
      */
-    public static $hooks = array('themeHeader' => '');
+    public static $hooks = array('themeHeader' => '',
+                                 'themeFooter' => '');
 
     /**
      * Load the theme file
@@ -46,7 +47,6 @@ class theme_simple extends package {
         // now the theme files
         $tpl = new Template('packages/theme_simple/theme/themeFooter.php');
 
-        $tpl->Set($themeMenus);
         $tpl->Set($themeVars);
 
         echo $tpl->parse();
