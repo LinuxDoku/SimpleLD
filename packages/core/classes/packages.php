@@ -203,8 +203,12 @@ class packages
         {
             self::$hooks = parse_ini_file('includes/hook_cache.php', true);
         }
+        if(file_exists('includes/controller_cache.php'))
+        {
+            self::$controller = parse_ini_file('includes/controller_cache.php', true);
+        }
         // check if any hooks are registered
-        if(count(self::$hooks) == 0)
+        if(count(self::$hooks) == 0 && count(self::$controller) == 0)
         {
             return false;
         } else {
@@ -215,13 +219,13 @@ class packages
     /**
      * Write all packages and hooks to cache file
      *
-     * @param  array   $array
      * @return bool
      */
     public static function writeCache()
     {
         // write to cache file
         ini::write('includes/hook_cache.php', self::$hooks);
+        ini::write('includes/controller_cache.php', self::$hooks);
         return true;
     }
 }
